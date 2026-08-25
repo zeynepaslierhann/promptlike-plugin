@@ -1,0 +1,21 @@
+{
+  "name": "promptlike",
+  "displayName": "PromptLikeEngineer",
+  "version": "0.1.0",
+  "description": "Read your PromptLikeEngineer prompt library from Claude Code: list, search, fetch by name, and fill {{variables}} — read-only, no token spend.",
+  "author": {
+    "name": "Zeynep Aslı Erhan",
+    "url": "https://promptlikeengineer.com"
+  },
+  "homepage": "https://promptlikeengineer.com",
+  "repository": "https://github.com/zeynepaslierhann/promptlike-plugin",
+  "license": "MIT",
+  "keywords": [
+    "prompt",
+    "prompt-library",
+    "prompt-engineering",
+    "versioning",
+    "mcp",
+    "developer-tools"
+  ]
+}
