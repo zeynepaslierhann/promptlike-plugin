@@ -6,17 +6,30 @@ the moment it needs it — no copy-paste, no stale duplicates in a system prompt
 
 ## Install
 
+From the community marketplace (once this plugin is listed there):
+
 ```bash
 /plugin marketplace add anthropics/claude-plugins-community
 ```
 
 Then install `promptlike` from `@claude-community`.
 
+Or straight from this repo — works today, and useful for trying it before the
+marketplace listing lands:
+
+```bash
+git clone https://github.com/zeynepaslierhann/promptlike-plugin
+claude --plugin-dir ./promptlike-plugin
+```
+
 Sign in once so the server can read your library (it shares the CLI session):
 
 ```bash
 npm i -g promptlike && ple login
 ```
+
+Without signing in the plugin still loads and its tools are listed — each call
+just answers "Not logged in. Run `ple login` first." instead of returning prompts.
 
 ## What it adds
 
