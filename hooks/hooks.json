@@ -1,0 +1,16 @@
+{
+  "description": "PromptLikeEngineer: before each message, match it against your saved prompts on this machine (no network, the text never leaves it) and tell Claude when one fits. Off: /config → PromptLikeEngineer 'Suggest saved prompts', or PLE_SUGGEST=off, or `ple config set suggest off`.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/suggest.sh\"",
+            "timeout": 2
+          }
+        ]
+      }
+    ]
+  }
+}

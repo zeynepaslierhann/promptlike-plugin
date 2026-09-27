@@ -30,19 +30,50 @@ npm i -g promptlike && ple login
 
 Without signing in the plugin still loads and its tools are listed — each call
 just answers "Not logged in. Run `ple login` first." instead of returning prompts.
+The suggestion hook then uses your local prompts (`ple save`).
 
 ## What it adds
 
 | Component | What it is |
 |---|---|
-| `promptlike` MCP server | Four read-only tools: `list_prompts`, `search_prompts`, `get_prompt`, `fill_variables` |
-| `/promptlike:prompt-library` skill | Teaches Claude to reach for a saved prompt instead of writing one from scratch |
+| `promptlike` MCP server | Tools: `list_prompts`, `search_prompts`, `get_prompt`, `fill_variables`, `suggest_prompts` (read) · `save_prompt`, `update_prompt` (write — add only) |
+| Your prompts as slash commands | Every saved prompt appears in the `/` menu as `/mcp__promptlike__<prompt-name>`; its `{{variables}}` become arguments. `/mcp__promptlike__save-this` saves the reusable prompt from the current conversation |
+| Your prompts as `@` resources | `promptlike://<repo>/<prompt>` — attach a saved prompt with `@` |
+| Suggestion hook | Before each message, a local match against your saved prompts; when one fits, Claude gets a one-line note (see below) |
+| `/promptlike:prompt-library` skill | Teaches Claude to reach for a saved prompt instead of writing one from scratch, and to save good ones back |
 
-## Read-only by design
+Needs `promptlike-mcp` 0.4+ (the plugin pins `@0.4`).
 
-The server cannot create, edit, or delete prompts, and it cannot spend your AI tokens.
-An agent that goes wrong can waste its own turn — it cannot damage your library. Editing
-happens in the web app or the CLI, where it gets versioned.
+## Saving from Claude Code
+
+Ask Claude to save a prompt, or run `/mcp__promptlike__save-this`. Writes are **add-only**:
+`save_prompt` creates a prompt, `update_prompt` adds a new version and keeps the old one.
+Nothing is ever deleted, and saving the same thing twice changes nothing. Plan limits apply
+exactly as on the web — when you hit one, Claude tells you and nothing is saved. Content
+that looks like an API key or token is refused.
+
+## Suggestion hook — what it does and how to turn it off
+
+On every message you send, the plugin runs `ple suggest --hook` (a Claude Code
+`UserPromptSubmit` hook). It:
+
+- matches your message against your saved prompts **on this machine** — a cached copy of
+  your library (or `~/.promptlike` when signed out). Your message is not sent anywhere;
+- stays silent for slash commands, short messages (under 20 characters), weak matches, and
+  prompts it already suggested in this session;
+- otherwise adds one short note for Claude naming up to three prompts. Claude fetches one
+  only if it is clearly relevant;
+- needs the CLI (`npm i -g promptlike`); without it the hook does nothing. It never blocks
+  your message: it answers in well under a second or stays silent.
+
+Turn it off any of these ways:
+
+- `/config` → PromptLikeEngineer → **Suggest saved prompts** → false
+- `ple config set suggest off`
+- `PLE_SUGGEST=off` in your environment (or in Claude Code's `settings.json` → `env`)
+
+How often a suggestion is shown is counted on your machine only (`ple stats` shows it);
+the server only learns when Claude actually fetches a suggested prompt.
 
 ## Self-hosting
 

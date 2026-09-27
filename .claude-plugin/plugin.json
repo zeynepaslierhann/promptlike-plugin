@@ -1,8 +1,8 @@
 {
   "name": "promptlike",
   "displayName": "PromptLikeEngineer",
-  "version": "0.1.0",
-  "description": "Read your PromptLikeEngineer prompt library from Claude Code: list, search, fetch by name, and fill {{variables}} — read-only, no token spend.",
+  "version": "0.3.0",
+  "description": "Your PromptLikeEngineer prompt library inside Claude Code: fetch, fill and save prompts, use them as slash commands and @-mentions, and get a local hint when a saved prompt fits what you ask.",
   "author": {
     "name": "Zeynep Aslı Erhan",
     "url": "https://promptlikeengineer.com"
@@ -17,5 +17,13 @@
     "versioning",
     "mcp",
     "developer-tools"
-  ]
+  ],
+  "userConfig": {
+    "suggestions": {
+      "type": "boolean",
+      "title": "Suggest saved prompts",
+      "description": "Before each message, match it against your saved prompts on this machine (no network) and tell Claude when one fits. Needs the `ple` CLI. Set to false to turn off.",
+      "default": true
+    }
+  }
 }
