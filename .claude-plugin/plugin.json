@@ -1,10 +1,11 @@
 {
   "name": "promptlike",
   "displayName": "PromptLikeEngineer",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Your PromptLikeEngineer prompt library inside Claude Code: fetch, fill and save prompts, use them as slash commands and @-mentions, and get a local hint when a saved prompt fits what you ask.",
   "author": {
     "name": "Zeynep Aslı Erhan",
+    "email": "zeynepaslierhan@gmail.com",
     "url": "https://promptlikeengineer.com"
   },
   "homepage": "https://promptlikeengineer.com",
@@ -18,11 +19,16 @@
     "mcp",
     "developer-tools"
   ],
+  "icon": "./logo.png",
+  "documentationUrl": "https://promptlikeengineer.com/docs/mcp",
+  "supportUrl": "https://github.com/zeynepaslierhann/promptlike-plugin/issues",
+  "privacyPolicyUrl": "https://promptlikeengineer.com/privacy",
+  "termsOfServiceUrl": "https://promptlikeengineer.com/terms",
   "userConfig": {
     "suggestions": {
       "type": "boolean",
       "title": "Suggest saved prompts",
-      "description": "Before each message, match it against your saved prompts on this machine (no network) and tell Claude when one fits. Needs the `ple` CLI. Set to false to turn off.",
+      "description": "Before each message, match it against your saved prompts on this machine and tell Claude when one fits; your message never leaves this machine. Needs the `ple` CLI. Set to false to turn off.",
       "default": true
     }
   }

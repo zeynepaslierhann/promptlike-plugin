@@ -1,0 +1,15 @@
+{
+  "name": "promptlikeengineer",
+  "description": "The PromptLikeEngineer plugin for Claude Code: your versioned prompt library as MCP tools, slash commands and @-resources.",
+  "owner": {
+    "name": "Zeynep Aslı Erhan",
+    "email": "zeynepaslierhan@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "promptlike",
+      "source": "./",
+      "description": "Fetch, fill and save prompts from your PromptLikeEngineer library; saved prompts also show up in the / menu. Writes are add-only. Needs a free account (ple login)."
+    }
+  ]
+}

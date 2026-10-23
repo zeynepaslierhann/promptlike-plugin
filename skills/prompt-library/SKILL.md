@@ -1,6 +1,6 @@
 ---
 name: prompt-library
-description: Pull a saved prompt from the user's PromptLikeEngineer library instead of writing one from scratch, and save good prompts back to it. Use when the user refers to a prompt they already have ("use my code-review prompt", "the one I saved for changelogs"), asks what prompts they have, asks to reuse or adapt a saved prompt, or asks to save/keep a prompt from this conversation. Also use before authoring a long prompt from scratch, to check whether a maintained version already exists.
+description: Pull a saved prompt from the user's PromptLikeEngineer library instead of writing one from scratch, and save good prompts back to it. Use when the user refers to a prompt they already have ("use my code-review prompt", "the one I saved for changelogs"), asks what prompts they have, asks to reuse or adapt a saved prompt, or asks to save/keep a prompt from this conversation. Also use before authoring a long prompt from scratch, to check whether the user already saved one for this task.
 ---
 
 # Prompt library
@@ -22,8 +22,8 @@ npm i -g promptlike && ple login
 
 1. **Find the prompt.** Use `search_prompts` when you have a topic, `list_prompts` when
    the user wants to see what exists (it accepts an optional `tag` filter). At the start of
-   a non-trivial task, `suggest_prompts` with a one-line task summary checks whether a
-   saved prompt fits.
+   a non-trivial task, `suggest_prompts` with a one-line task summary checks whether one of
+   the user's saved prompts fits.
 2. **Fetch it.** `get_prompt` takes a name, id, or short-id. Pass `version` to pin a
    specific revision when the user names one; otherwise you get the current version.
    When you fetch a prompt because `suggest_prompts` or a "PromptLikeEngineer: … may fit"
@@ -36,6 +36,9 @@ npm i -g promptlike && ple login
 
 - **Do not invent a prompt when one exists.** The point of the library is that the saved
   version is the maintained one.
+- **Say what you use.** When you follow a saved prompt, name it (title and version) so the
+  user knows where the instructions came from. The library is the user's own; never fetch
+  prompts the user did not save.
 - **Ambiguous name → ask.** The server returns a candidate list (id + title) rather than
   guessing. Show the user the candidates instead of picking one yourself.
 - **Do not paste the whole library into context.** Fetch the one prompt you need.
@@ -47,8 +50,8 @@ npm i -g promptlike && ple login
 
 - **New prompt:** `save_prompt` with `title`, `content`, and optionally `description`,
   `project` (repo) and `tags`. Mark the parts that change between uses as
-  `{{snake_case}}` variables. The `/mcp__promptlike__save-this` prompt walks through
-  extracting a reusable prompt from the conversation.
+  `{{snake_case}}` variables. The `save-this` prompt (`/mcp__plugin_promptlike_promptlike__save-this`)
+  walks through extracting a reusable prompt from the conversation.
 - **New version of an existing prompt:** `update_prompt` with the **exact** title or id and
   the full new `content` (plus `changelog`, and `bump` if the user asks for minor/major).
   The old version is kept.

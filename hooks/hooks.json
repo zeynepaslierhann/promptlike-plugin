@@ -1,5 +1,5 @@
 {
-  "description": "PromptLikeEngineer: before each message, match it against your saved prompts on this machine (no network, the text never leaves it) and tell Claude when one fits. Off: /config → PromptLikeEngineer 'Suggest saved prompts', or PLE_SUGGEST=off, or `ple config set suggest off`.",
+  "description": "PromptLikeEngineer: before each message, match it against your saved prompts on this machine (your message never leaves it) and tell Claude when one fits. Off: /config → PromptLikeEngineer 'Suggest saved prompts', or PLE_SUGGEST=off, or `ple config set suggest off`.",
   "hooks": {
     "UserPromptSubmit": [
       {

@@ -3,7 +3,9 @@
 #
 # Prints at most one short "saved prompts that may fit" note, which Claude Code
 # adds to Claude's context. Matching runs locally in `ple suggest --hook`
-# (cached library or ~/.promptlike): no network, the message is not sent anywhere.
+# (cached library or ~/.promptlike); the message is never sent anywhere. Signed in,
+# `ple` may refresh that cached copy of your own library in the background
+# (at most once a minute; the hook never waits for it).
 #
 # This hook must never get in the way: every problem (no `ple`, suggestions
 # off, any error) ends in a silent exit 0. `ple` enforces its own ~0.8 s budget;
