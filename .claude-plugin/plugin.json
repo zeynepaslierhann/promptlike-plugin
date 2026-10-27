@@ -1,7 +1,7 @@
 {
   "name": "promptlike",
   "displayName": "PromptLikeEngineer",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Your PromptLikeEngineer prompt library inside Claude Code: fetch, fill and save prompts, use them as slash commands and @-mentions, and get a local hint when a saved prompt fits what you ask.",
   "author": {
     "name": "Zeynep Aslı Erhan",

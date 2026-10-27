@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 — 2026-10-25
+
+The MCP server is now pinned to `promptlike-mcp@0.5.1`: the client refuses plain-http API URLs and never follows redirects (a redirect can no longer replay your login), writes the saved session atomically with owner-only permissions, and its secret check also covers changelog text and tags and ignores invisible characters. Nothing else in the plugin changed.
+
 ## 0.4.0 — 2026-10-22
 
 Install from this repository as its own Claude Code marketplace, the MCP server is pinned to

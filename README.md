@@ -53,7 +53,7 @@ instead of returning prompts. The suggestion hook then uses your local prompts (
 | Suggestion hook | Before each message, a local match against your saved prompts; when one fits, Claude gets a short note (see below) |
 | `/promptlike:prompt-library` skill | Teaches Claude to reach for a saved prompt instead of writing one from scratch, and to save good ones back |
 
-The plugin starts the server with `npx -y promptlike-mcp@0.5.0`, pinned to that exact version.
+The plugin starts the server with `npx -y promptlike-mcp@0.5.1`, pinned to that exact version.
 
 ## Examples
 
@@ -144,7 +144,7 @@ description, tags, repo, use count and the first 600 characters of the text) and
 `cache/suggest-state.json` (a counter and the prompts suggested in your last 20 Claude Code
 sessions). Signed out, the hook reads `~/.promptlike` instead.
 
-**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.5.0`; the first time, npm
+**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.5.1`; the first time, npm
 downloads that exact version from the npm registry. It runs on your machine and talks only to
 https://promptlikeengineer.com (or the address in `PROMPTLIKE_API_URL`, if you set one),
 authenticating with the session `ple login` stored and refreshing it through the same host
@@ -178,7 +178,7 @@ PromptLikeEngineer account; how the service handles them is in its
 | "Rate limited. Retry in 12s." | Wait that long, then ask again |
 | "Cannot reach https://promptlikeengineer.com. Check your connection." or "No response from https://promptlikeengineer.com within 15s." | Check your connection and try again |
 | "… Plan limit reached — nothing was saved. Upgrade: …" | Your plan's limit stopped the save and nothing changed |
-| `claude mcp list` shows `plugin:promptlike:promptlike` as failed to connect | The server needs Node.js 18 or newer, `npx` on your PATH and, the first time, access to the npm registry. Run `npx -y promptlike-mcp@0.5.0` in a terminal: it prints `promptlike-mcp v0.5.0 ready (stdio).` when it starts (stop it with Ctrl-C), or the error if it cannot |
+| `claude mcp list` shows `plugin:promptlike:promptlike` as failed to connect | The server needs Node.js 18 or newer, `npx` on your PATH and, the first time, access to the npm registry. Run `npx -y promptlike-mcp@0.5.1` in a terminal: it prints `promptlike-mcp v0.5.0 ready (stdio).` when it starts (stop it with Ctrl-C), or the error if it cannot |
 | No suggestion notes appear | The hook needs the `ple` CLI on your PATH. It stays silent for slash commands, messages under 20 characters, weak matches and prompts already suggested in this session, and when it is switched off: `ple config get suggest` shows whether it is on |
 
 ## Self-hosting
