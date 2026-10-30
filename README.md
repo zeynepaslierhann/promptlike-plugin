@@ -47,13 +47,13 @@ instead of returning prompts. The suggestion hook then uses your local prompts (
 
 | Component | What it is |
 |---|---|
-| `promptlike` MCP server | Tools: `list_prompts`, `search_prompts`, `get_prompt`, `fill_variables`, `suggest_prompts` (read) · `save_prompt`, `update_prompt` (write — add only) |
+| `promptlike` MCP server | Tools: `list_prompts`, `search_prompts`, `get_prompt`, `fill_variables`, `suggest_prompts` (read) · `save_prompt`, `update_prompt` (write — add only) · `submit_feedback` (a short note to the maker) |
 | Your prompts as slash commands | Every saved prompt is an MCP prompt: type `/` and pick it, or run `/mcp__plugin_promptlike_promptlike__<prompt-name>` (a title such as "Code Review" becomes `code-review`). Its `{{variables}}` become arguments. `/mcp__plugin_promptlike_promptlike__save-this` saves the reusable prompt from the current conversation |
 | Your prompts as `@` resources | `promptlike://<repo>/<prompt>` — attach a saved prompt with `@` |
 | Suggestion hook | Before each message, a local match against your saved prompts; when one fits, Claude gets a short note (see below) |
 | `/promptlike:prompt-library` skill | Teaches Claude to reach for a saved prompt instead of writing one from scratch, and to save good ones back |
 
-The plugin starts the server with `npx -y promptlike-mcp@0.5.1`, pinned to that exact version.
+The plugin starts the server with `npx -y promptlike-mcp@0.6.0`, pinned to that exact version.
 
 ## Examples
 
@@ -144,7 +144,7 @@ description, tags, repo, use count and the first 600 characters of the text) and
 `cache/suggest-state.json` (a counter and the prompts suggested in your last 20 Claude Code
 sessions). Signed out, the hook reads `~/.promptlike` instead.
 
-**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.5.1`; the first time, npm
+**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.6.0`; the first time, npm
 downloads that exact version from the npm registry. It runs on your machine and talks only to
 https://promptlikeengineer.com (or the address in `PROMPTLIKE_API_URL`, if you set one),
 authenticating with the session `ple login` stored and refreshing it through the same host
@@ -160,7 +160,8 @@ when it expires. It has no other network code. What it sends:
 - `suggest_prompts` sends the task description Claude gives it (up to 2,000 characters) so the
   server can match it against your library; the endpoint does not log or store that text. The
   hook above never does this;
-- `save_prompt` and `update_prompt` send the text you asked to save.
+- `save_prompt` and `update_prompt` send the text you asked to save;
+- `submit_feedback` sends the one short sentence Claude writes, a type (`bug`, `missing`, `idea` or `prompt`), the title or id of the prompt it is about if any, and the server version, OS and CPU, Node version and tool name. It works without a session, never carries a prompt body, and refuses a message that looks like a key or token.
 
 **Limits on what it does.** Writes are add-only: the server has no delete tool, saving the same
 text twice changes nothing, and content that looks like a secret (API keys, tokens, private
@@ -178,7 +179,7 @@ PromptLikeEngineer account; how the service handles them is in its
 | "Rate limited. Retry in 12s." | Wait that long, then ask again |
 | "Cannot reach https://promptlikeengineer.com. Check your connection." or "No response from https://promptlikeengineer.com within 15s." | Check your connection and try again |
 | "… Plan limit reached — nothing was saved. Upgrade: …" | Your plan's limit stopped the save and nothing changed |
-| `claude mcp list` shows `plugin:promptlike:promptlike` as failed to connect | The server needs Node.js 18 or newer, `npx` on your PATH and, the first time, access to the npm registry. Run `npx -y promptlike-mcp@0.5.1` in a terminal: it prints `promptlike-mcp v0.5.0 ready (stdio).` when it starts (stop it with Ctrl-C), or the error if it cannot |
+| `claude mcp list` shows `plugin:promptlike:promptlike` as failed to connect | The server needs Node.js 18 or newer, `npx` on your PATH and, the first time, access to the npm registry. Run `npx -y promptlike-mcp@0.6.0` in a terminal: it prints `promptlike-mcp v0.6.0 ready (stdio).` when it starts (stop it with Ctrl-C), or the error if it cannot |
 | No suggestion notes appear | The hook needs the `ple` CLI on your PATH. It stays silent for slash commands, messages under 20 characters, weak matches and prompts already suggested in this session, and when it is switched off: `ple config get suggest` shows whether it is on |
 
 ## Self-hosting

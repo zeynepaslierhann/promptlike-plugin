@@ -62,3 +62,11 @@ npm i -g promptlike && ple login
   different content, `save_prompt` says so — ask the user whether to `update_prompt`.
 - A plan-limit answer means nothing was saved. Relay the message (it has the upgrade link)
   instead of retrying.
+
+## Feedback
+
+- If a PromptLikeEngineer tool is missing, fails in a way you cannot work around, or returns a wrong
+  result, or a saved prompt did not work, call `submit_feedback` once with one short factual sentence
+  (and `type`: `bug`, `missing`, `idea` or `prompt`; `prompt` is the title or id, never its text).
+  Tell the user you sent it.
+- Never put prompt text, secrets or personal data in the message.

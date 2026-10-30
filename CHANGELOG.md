@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 — 2026-10-30
+
+The MCP server is now pinned to `promptlike-mcp@0.6.0`. New in the server: the eighth tool `submit_feedback`,
+which lets Claude send the maker a short note when a tool is missing or broken (it works without a session
+and never carries prompt text), and `update_prompt` can also set a prompt's description and add tags
+(add-only: no tag is ever removed). The `prompt-library` skill now says when to call `submit_feedback`.
+
 ## 0.4.1 — 2026-10-25
 
 The MCP server is now pinned to `promptlike-mcp@0.5.1`: the client refuses plain-http API URLs and never follows redirects (a redirect can no longer replay your login), writes the saved session atomically with owner-only permissions, and its secret check also covers changelog text and tags and ignores invisible characters. Nothing else in the plugin changed.

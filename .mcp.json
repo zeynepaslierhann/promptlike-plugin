@@ -2,7 +2,7 @@
   "mcpServers": {
     "promptlike": {
       "command": "npx",
-      "args": ["-y", "promptlike-mcp@0.5.1"]
+      "args": ["-y", "promptlike-mcp@0.6.0"]
     }
   }
 }
