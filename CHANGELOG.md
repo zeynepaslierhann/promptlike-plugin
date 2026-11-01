@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 — 2026-10-31
+
+The MCP server is now pinned to `promptlike-mcp@0.7.0`. New in the server: the ninth tool `move_prompt` (moves a prompt to
+another repo or folder; versions, labels, stars and usage stay with it, and a move that changes who can see the prompt
+waits for the user's agreement), a `folder` argument on `save_prompt`, and `repo` and `folder` on every prompt that
+`list_prompts` returns.
+
 ## 0.5.0 — 2026-10-30
 
 The MCP server is now pinned to `promptlike-mcp@0.6.0`. New in the server: the eighth tool `submit_feedback`,

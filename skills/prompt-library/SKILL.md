@@ -55,6 +55,9 @@ npm i -g promptlike && ple login
 - **New version of an existing prompt:** `update_prompt` with the **exact** title or id and
   the full new `content` (plus `changelog`, and `bump` if the user asks for minor/major).
   The old version is kept.
+- **Move a prompt:** `move_prompt` with the **exact** title or id, `to_project` (another repo) and/or `folder`.
+  Its versions, labels and usage stay. If the answer says the move changes who can see the prompt, ask the user
+  first and only then repeat with `confirm_visibility: true`.
 - Only save when the user asks you to. Show them what you are saving first.
 - Never put secrets (API keys, tokens, passwords) in a prompt — the server refuses content
   that looks like one; replace the value with a `{{variable}}`.
