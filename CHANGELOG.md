@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1 — 2026-11-01
+
+The MCP server is now pinned to `promptlike-mcp@0.7.1`. `fill_variables` reports names the prompt does not have in
+`unknown_variables` instead of ignoring them, and `update_prompt` says why a tag failed (on a rate limit it stops, reports the
+rest as failed and returns `retry_after`). The listing now says "Nothing is deleted" instead of "add-only", and that the plugin
+needs a free account. `update_prompt` still never removes a tag.
+
 ## 0.6.0 — 2026-10-31
 
 The MCP server is now pinned to `promptlike-mcp@0.7.0`. New in the server: the ninth tool `move_prompt` (moves a prompt to

@@ -1,8 +1,8 @@
 {
   "name": "promptlike",
   "displayName": "PromptLikeEngineer",
-  "version": "0.6.0",
-  "description": "Your PromptLikeEngineer prompt library inside Claude Code: fetch, fill and save prompts, use them as slash commands and @-mentions, and get a local hint when a saved prompt fits what you ask.",
+  "version": "0.6.1",
+  "description": "Your PromptLikeEngineer prompt library inside Claude Code: fetch, fill and save prompts, use them as slash commands and @-mentions, and get a local hint when a saved prompt fits what you ask. Needs a free account (ple login).",
   "author": {
     "name": "Zeynep Aslı Erhan",
     "email": "zeynepaslierhan@gmail.com",

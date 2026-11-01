@@ -9,7 +9,7 @@
     {
       "name": "promptlike",
       "source": "./",
-      "description": "Fetch, fill and save prompts from your PromptLikeEngineer library; saved prompts also show up in the / menu. Writes are add-only. Needs a free account (ple login)."
+      "description": "Fetch, fill and save prompts from your PromptLikeEngineer library; saved prompts also show up in the / menu. Nothing is deleted. Needs a free account (ple login)."
     }
   ]
 }

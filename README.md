@@ -47,13 +47,13 @@ instead of returning prompts. The suggestion hook then uses your local prompts (
 
 | Component | What it is |
 |---|---|
-| `promptlike` MCP server | Tools: `list_prompts`, `search_prompts`, `get_prompt`, `fill_variables`, `suggest_prompts` (read) · `save_prompt`, `update_prompt` (write — add only), `move_prompt` (moves a prompt to another repo or folder; deletes nothing) · `submit_feedback` (a short note to the maker) |
+| `promptlike` MCP server | Tools: `list_prompts`, `search_prompts`, `get_prompt`, `fill_variables`, `suggest_prompts` (read) · `save_prompt`, `update_prompt` (write — nothing is deleted), `move_prompt` (moves a prompt to another repo or folder; deletes nothing) · `submit_feedback` (a short note to the maker) |
 | Your prompts as slash commands | Every saved prompt is an MCP prompt: type `/` and pick it, or run `/mcp__plugin_promptlike_promptlike__<prompt-name>` (a title such as "Code Review" becomes `code-review`). Its `{{variables}}` become arguments. `/mcp__plugin_promptlike_promptlike__save-this` saves the reusable prompt from the current conversation |
 | Your prompts as `@` resources | `promptlike://<repo>/<prompt>` — attach a saved prompt with `@` |
 | Suggestion hook | Before each message, a local match against your saved prompts; when one fits, Claude gets a short note (see below) |
 | `/promptlike:prompt-library` skill | Teaches Claude to reach for a saved prompt instead of writing one from scratch, and to save good ones back |
 
-The plugin starts the server with `npx -y promptlike-mcp@0.7.0`, pinned to that exact version.
+The plugin starts the server with `npx -y promptlike-mcp@0.7.1`, pinned to that exact version.
 
 ## Examples
 
@@ -87,13 +87,13 @@ variable you leave out stays as `{{name}}` in the text Claude receives.
 
 The prompt tells Claude to pull the reusable instruction out of the conversation, mark what
 changes between uses as `{{variables}}`, show you the title, description and text, and then
-call `save_prompt`. Saving is add-only, and text that looks like an API key or token is refused.
+call `save_prompt`. Saving never deletes anything, and text that looks like an API key or token is refused.
 
 ## Saving from Claude Code
 
-Ask Claude to save a prompt, or run `/mcp__plugin_promptlike_promptlike__save-this`. Writes are
-**add-only**: `save_prompt` creates a prompt, `update_prompt` adds a new version and keeps the
-old one. Nothing is ever deleted, and saving the same thing twice changes nothing. Plan limits
+Ask Claude to save a prompt, or run `/mcp__plugin_promptlike_promptlike__save-this`. Nothing is
+ever deleted: `save_prompt` creates a prompt, `update_prompt` adds a new version and keeps the
+old one, `move_prompt` changes where a prompt lives, and saving the same thing twice changes nothing. Plan limits
 apply exactly as on the web — when you hit one, Claude tells you and nothing is saved. Content
 that looks like an API key or token is refused.
 
@@ -144,7 +144,7 @@ description, tags, repo, use count and the first 600 characters of the text) and
 `cache/suggest-state.json` (a counter and the prompts suggested in your last 20 Claude Code
 sessions). Signed out, the hook reads `~/.promptlike` instead.
 
-**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.7.0`; the first time, npm
+**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.7.1`; the first time, npm
 downloads that exact version from the npm registry. It runs on your machine and talks only to
 https://promptlikeengineer.com (or the address in `PROMPTLIKE_API_URL`, if you set one),
 authenticating with the session `ple login` stored and refreshing it through the same host
@@ -163,7 +163,7 @@ when it expires. It has no other network code. What it sends:
 - `save_prompt` and `update_prompt` send the text you asked to save;
 - `submit_feedback` sends the one short sentence Claude writes, a type (`bug`, `missing`, `idea` or `prompt`), the title or id of the prompt it is about if any, and the server version, OS and CPU, Node version and tool name. It works without a session, never carries a prompt body, and refuses a message that looks like a key or token.
 
-**Limits on what it does.** Writes are add-only: the server has no delete tool, saving the same
+**Limits on what it does.** Nothing is deleted: the server has no delete tool, saving the same
 text twice changes nothing, and content that looks like a secret (API keys, tokens, private
 keys) is refused — the error names the kind, never the value. Prompts you save live in your
 PromptLikeEngineer account; how the service handles them is in its
