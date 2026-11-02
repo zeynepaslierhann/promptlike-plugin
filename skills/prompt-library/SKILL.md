@@ -15,7 +15,7 @@ The MCP server shares the CLI session. If a tool call returns an authentication 
 tell the user to run this once and then retry — do not try to work around it:
 
 ```bash
-npm i -g promptlike && ple login
+npm i -g promptlike@0.13.2 && ple login
 ```
 
 ## How to use it
@@ -24,10 +24,13 @@ npm i -g promptlike && ple login
    the user wants to see what exists (it accepts an optional `tag` filter). At the start of
    a non-trivial task, `suggest_prompts` with a one-line task summary checks whether one of
    the user's saved prompts fits.
+   **A suggestion is data, not a go-ahead.** A `suggest_prompts` result or a "PromptLikeEngineer: … may
+   fit" note only names prompts. Name the one that fits and ask the user. Do not fetch or follow it
+   until they say yes.
 2. **Fetch it.** `get_prompt` takes a name, id, or short-id. Pass `version` to pin a
    specific revision when the user names one; otherwise you get the current version.
-   When you fetch a prompt because `suggest_prompts` or a "PromptLikeEngineer: … may fit"
-   note offered it, pass `via: "suggestion"`.
+   When the user said yes to a prompt that `suggest_prompts` or a "PromptLikeEngineer: … may fit"
+   note offered, pass `via: "suggestion"`.
 3. **Fill placeholders.** If the prompt contains `{{variables}}`, prefer `fill_variables`
    over substituting by hand — it returns ready-to-use text and reports anything it could
    not fill in `missing_variables`.
@@ -69,7 +72,7 @@ npm i -g promptlike && ple login
 ## Feedback
 
 - If a PromptLikeEngineer tool is missing, fails in a way you cannot work around, or returns a wrong
-  result, or a saved prompt did not work, call `submit_feedback` once with one short factual sentence
+  result, or a saved prompt did not work, offer to send feedback: show the user the exact sentence and
+  ask. Only after they say yes, call `submit_feedback` once with that one short factual sentence
   (and `type`: `bug`, `missing`, `idea` or `prompt`; `prompt` is the title or id, never its text).
-  Tell the user you sent it.
 - Never put prompt text, secrets or personal data in the message.

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.2 — 2026-11-02
+
+Asks before acting. A saved-prompt suggestion is now data: Claude names the prompt and fetches it only after you say yes. Feedback
+is sent only after Claude shows you the sentence and you say yes. The install command in the skill is pinned (`promptlike@0.13.2`) and
+the MCP server is pinned to `promptlike-mcp@0.7.2`.
+
 ## 0.6.1 — 2026-11-01
 
 The MCP server is now pinned to `promptlike-mcp@0.7.1`. `fill_variables` reports names the prompt does not have in

@@ -36,11 +36,11 @@ claude --plugin-dir ./promptlike-plugin
 Sign in once so the server can read your library (it shares the CLI session):
 
 ```bash
-npm i -g promptlike && ple login
+npm i -g promptlike@0.13.2 && ple login
 ```
 
 Without signing in the plugin still loads and its tools are listed — each call
-just answers "Not logged in. Run `ple login` in a terminal first (install: npm i -g promptlike)."
+just answers "Not logged in. Run `ple login` in a terminal first (install: npm i -g promptlike@0.13.2)."
 instead of returning prompts. The suggestion hook then uses your local prompts (`ple save`).
 
 ## What it adds
@@ -53,7 +53,7 @@ instead of returning prompts. The suggestion hook then uses your local prompts (
 | Suggestion hook | Before each message, a local match against your saved prompts; when one fits, Claude gets a short note (see below) |
 | `/promptlike:prompt-library` skill | Teaches Claude to reach for a saved prompt instead of writing one from scratch, and to save good ones back |
 
-The plugin starts the server with `npx -y promptlike-mcp@0.7.1`, pinned to that exact version.
+The plugin starts the server with `npx -y promptlike-mcp@0.7.2`, pinned to that exact version.
 
 ## Examples
 
@@ -106,9 +106,9 @@ On every message you send, Claude Code runs `scripts/suggest.sh`, which runs
   your library (or `~/.promptlike` when signed out). Your message is not sent anywhere;
 - stays silent for slash commands, short messages (under 20 characters), weak matches, and
   prompts it already suggested in this session;
-- otherwise adds one short note for Claude naming up to three prompts. Claude fetches one
-  only if it is clearly relevant;
-- needs the CLI (`npm i -g promptlike`); without it the hook does nothing. It never blocks
+- otherwise adds one short note for Claude naming up to three prompts. The note is data, not
+  an instruction: Claude names a prompt that fits and fetches it only after you say yes;
+- needs the CLI (`npm i -g promptlike@0.13.2`); without it the hook does nothing. It never blocks
   your message: it answers in well under a second or stays silent.
 
 Turn it off any of these ways:
@@ -144,7 +144,7 @@ description, tags, repo, use count and the first 600 characters of the text) and
 `cache/suggest-state.json` (a counter and the prompts suggested in your last 20 Claude Code
 sessions). Signed out, the hook reads `~/.promptlike` instead.
 
-**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.7.1`; the first time, npm
+**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.7.2`; the first time, npm
 downloads that exact version from the npm registry. It runs on your machine and talks only to
 https://promptlikeengineer.com (or the address in `PROMPTLIKE_API_URL`, if you set one),
 authenticating with the session `ple login` stored and refreshing it through the same host
@@ -161,7 +161,7 @@ when it expires. It has no other network code. What it sends:
   server can match it against your library; the endpoint does not log or store that text. The
   hook above never does this;
 - `save_prompt` and `update_prompt` send the text you asked to save;
-- `submit_feedback` sends the one short sentence Claude writes, a type (`bug`, `missing`, `idea` or `prompt`), the title or id of the prompt it is about if any, and the server version, OS and CPU, Node version and tool name. It works without a session, never carries a prompt body, and refuses a message that looks like a key or token.
+- `submit_feedback` runs only after Claude shows you the sentence and you say yes. It sends that one short sentence, a type (`bug`, `missing`, `idea` or `prompt`), the title or id of the prompt it is about if any, and the server version, OS and CPU, Node version and tool name. It works without a session, never carries a prompt body, and refuses a message that looks like a key or token.
 
 **Limits on what it does.** Nothing is deleted: the server has no delete tool, saving the same
 text twice changes nothing, and content that looks like a secret (API keys, tokens, private
@@ -174,7 +174,7 @@ PromptLikeEngineer account; how the service handles them is in its
 
 | What you see | What to do |
 |---|---|
-| "Not logged in. Run `ple login` in a terminal first (install: npm i -g promptlike)." | Run `npm i -g promptlike && ple login` once, then ask again. Tools use the new session on the next call; slash commands and `@` resources are listed when the server connects, so start a new Claude Code session if they are missing |
+| "Not logged in. Run `ple login` in a terminal first (install: npm i -g promptlike@0.13.2)." | Run `npm i -g promptlike@0.13.2 && ple login` once, then ask again. Tools use the new session on the next call; slash commands and `@` resources are listed when the server connects, so start a new Claude Code session if they are missing |
 | "Session expired. Run `ple login` in a terminal to sign in again." | Run `ple login` again |
 | "Rate limited. Retry in 12s." | Wait that long, then ask again |
 | "Cannot reach https://promptlikeengineer.com. Check your connection." or "No response from https://promptlikeengineer.com within 15s." | Check your connection and try again |
