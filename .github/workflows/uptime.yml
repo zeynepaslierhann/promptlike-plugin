@@ -1,0 +1,59 @@
+name: Uptime
+
+# Probes four public pages of promptlikeengineer.com every 5 minutes from GitHub's network.
+# Anonymous GET only: no secrets, no checkout, no permissions.
+# GitHub triggers scheduled workflows late and sparsely, so one run keeps probing for ~5.5 hours
+# and the next scheduled run queues behind it. If a probe fails three times, the run fails
+# (GitHub emails the repository owner) and the queued run takes over.
+
+on:
+  schedule:
+    - cron: '13 * * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    steps:
+      - name: Probe every 5 minutes
+        env:
+          BASE: https://promptlikeengineer.com
+          ROUNDS: '66'
+          PAUSE: '300'
+        run: |
+          set -u
+          probe() {
+            name="$1"; path="$2"; limit="$3"
+            for try in 1 2 3; do
+              out=$(curl -sS -o /dev/null -m 25 -w '%{http_code} %{time_total}' "$BASE$path" 2>/dev/null || echo "000 0")
+              code=${out%% *}; secs=${out##* }
+              if [ "$code" = "200" ] && awk -v s="$secs" -v m="$limit" 'BEGIN{exit !(s<=m)}'; then
+                echo "$(date -u +%H:%M:%S) OK    $name $code ${secs}s"
+                return 0
+              fi
+              echo "$(date -u +%H:%M:%S) FAIL  $name $code ${secs}s (try $try, limit ${limit}s)"
+              sleep 15
+            done
+            return 1
+          }
+          round=1
+          while [ "$round" -le "$ROUNDS" ]; do
+            fail=0
+            probe home     /                                 6 || fail=1
+            probe explore  /explore                          6 || fail=1
+            probe repo     /zeynepaslierhan/start-here       8 || fail=1
+            probe database /api/public/users/zeynepaslierhan 5 || fail=1
+            if [ "$fail" -ne 0 ]; then
+              echo "::error::promptlikeengineer.com probe failed in round $round; see FAIL lines above"
+              exit 1
+            fi
+            round=$((round + 1))
+            if [ "$round" -le "$ROUNDS" ]; then sleep "$PAUSE"; fi
+          done
