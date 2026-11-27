@@ -182,7 +182,7 @@ PromptLikeEngineer account; how the service handles them is in its
 | "Rate limited. Retry in 12s." | Wait that long, then ask again |
 | "Cannot reach https://promptlikeengineer.com. Check your connection." or "No response from https://promptlikeengineer.com within 15s." | Check your connection and try again |
 | "… Plan limit reached — nothing was saved. Upgrade: …" | Your plan's limit stopped the save and nothing changed |
-| `claude mcp list` shows `plugin:promptlike:promptlike` as failed to connect | The server needs Node.js 18 or newer, `npx` on your PATH and, the first time, access to the npm registry. Run `npx -y promptlike-mcp@0.7.0` in a terminal: it prints `promptlike-mcp v0.7.0 ready (stdio).` when it starts (stop it with Ctrl-C), or the error if it cannot |
+| `claude mcp list` shows `plugin:promptlike:promptlike` as failed to connect | The server needs Node.js 18 or newer, `npx` on your PATH and, the first time, access to the npm registry. Run `npx -y promptlike-mcp@0.8.0` in a terminal: it prints `promptlike-mcp v0.8.0 ready (stdio).` when it starts (stop it with Ctrl-C), or the error if it cannot |
 | No suggestion notes appear | The hook needs the `ple` CLI on your PATH. It stays silent for slash commands, messages under 20 characters, weak matches and prompts already suggested in this session, and when it is switched off: `ple config get suggest` shows whether it is on |
 
 ## Self-hosting
