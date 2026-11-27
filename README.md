@@ -36,24 +36,24 @@ claude --plugin-dir ./promptlike-plugin
 Sign in once so the server can read your library (it shares the CLI session):
 
 ```bash
-npm i -g promptlike@0.13.2 && ple login
+npm i -g promptlike@0.14.0 && ple login
 ```
 
 Without signing in the plugin still loads and its tools are listed — each call
-just answers "Not logged in. Run `ple login` in a terminal first (install: npm i -g promptlike@0.13.2)."
+just answers "Not logged in. Run `ple login` in a terminal first (install: npm i -g promptlike@0.14.0)."
 instead of returning prompts. The suggestion hook then uses your local prompts (`ple save`).
 
 ## What it adds
 
 | Component | What it is |
 |---|---|
-| `promptlike` MCP server | Tools: `list_prompts`, `search_prompts`, `get_prompt`, `fill_variables`, `suggest_prompts` (read) · `save_prompt`, `update_prompt` (write — nothing is deleted), `move_prompt` (moves a prompt to another repo or folder; deletes nothing) · `submit_feedback` (a short note to the maker) |
+| `promptlike` MCP server | Tools: `list_prompts`, `search_prompts`, `get_prompt`, `fill_variables`, `suggest_prompts` (read) · `save_prompt`, `update_prompt` (write — nothing is deleted), `fork_prompt` (copies a public prompt of someone else into a repo you own, as a private copy), `update_repo` (changes a repo's one-line description), `move_prompt` (moves a prompt to another repo or folder; deletes nothing) · `submit_feedback` (a short note to the maker) |
 | Your prompts as slash commands | Every saved prompt is an MCP prompt: type `/` and pick it, or run `/mcp__plugin_promptlike_promptlike__<prompt-name>` (a title such as "Code Review" becomes `code-review`). Its `{{variables}}` become arguments. `/mcp__plugin_promptlike_promptlike__save-this` saves the reusable prompt from the current conversation |
 | Your prompts as `@` resources | `promptlike://<repo>/<prompt>` — attach a saved prompt with `@` |
 | Suggestion hook | Before each message, a local match against your saved prompts; when one fits, Claude gets a short note (see below) |
 | `/promptlike:prompt-library` skill | Teaches Claude to reach for a saved prompt instead of writing one from scratch, and to save good ones back |
 
-The plugin starts the server with `npx -y promptlike-mcp@0.7.2`, pinned to that exact version.
+The plugin starts the server with `npx -y promptlike-mcp@0.8.0`, pinned to that exact version.
 
 ## Examples
 
@@ -93,7 +93,9 @@ call `save_prompt`. Saving never deletes anything, and text that looks like an A
 
 Ask Claude to save a prompt, or run `/mcp__plugin_promptlike_promptlike__save-this`. Nothing is
 ever deleted: `save_prompt` creates a prompt, `update_prompt` adds a new version and keeps the
-old one, `move_prompt` changes where a prompt lives, and saving the same thing twice changes nothing. Plan limits
+old one, `move_prompt` changes where a prompt lives, `fork_prompt` adds a private copy of someone's public
+prompt, and saving the same thing twice changes nothing. One thing has no history: `update_repo` replaces a repo's
+description and returns the previous text in its answer. Plan limits
 apply exactly as on the web — when you hit one, Claude tells you and nothing is saved. Content
 that looks like an API key or token is refused.
 
@@ -108,7 +110,7 @@ On every message you send, Claude Code runs `scripts/suggest.sh`, which runs
   prompts it already suggested in this session;
 - otherwise adds one short note for Claude naming up to three prompts. The note is data, not
   an instruction: Claude names a prompt that fits and fetches it only after you say yes;
-- needs the CLI (`npm i -g promptlike@0.13.2`); without it the hook does nothing. It never blocks
+- needs the CLI (`npm i -g promptlike@0.14.0`); without it the hook does nothing. It never blocks
   your message: it answers in well under a second or stays silent.
 
 Turn it off any of these ways:
@@ -144,7 +146,7 @@ description, tags, repo, use count and the first 600 characters of the text) and
 `cache/suggest-state.json` (a counter and the prompts suggested in your last 20 Claude Code
 sessions). Signed out, the hook reads `~/.promptlike` instead.
 
-**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.7.2`; the first time, npm
+**MCP server.** Claude Code starts it with `npx -y promptlike-mcp@0.8.0`; the first time, npm
 downloads that exact version from the npm registry. It runs on your machine and talks only to
 https://promptlikeengineer.com (or the address in `PROMPTLIKE_API_URL`, if you set one),
 authenticating with the session `ple login` stored and refreshing it through the same host
@@ -161,10 +163,11 @@ when it expires. It has no other network code. What it sends:
   server can match it against your library; the endpoint does not log or store that text. The
   hook above never does this;
 - `save_prompt` and `update_prompt` send the text you asked to save;
-- `submit_feedback` runs only after Claude shows you the sentence and you say yes. It sends that one short sentence, a type (`bug`, `missing`, `idea` or `prompt`), the title or id of the prompt it is about if any, and the server version, OS and CPU, Node version and tool name. It works without a session, never carries a prompt body, and refuses a message that looks like a key or token.
+- `fork_prompt` asks the public listing for the prompts of the user and repo you named (no session is sent with that request), then sends the id of the prompt and the repo of yours to copy it into; `update_repo` sends the repo and the new description;
+- `submit_feedback`: its definition tells Claude to show you the sentence and ask first; the server cannot check that it did. It sends that one short sentence, a type (`bug`, `missing`, `idea` or `prompt`), the title or id of the prompt it is about if any, and the server version, OS and CPU, Node version and tool name. It works without a session, never carries a prompt body, and refuses a message that looks like a key or token.
 
 **Limits on what it does.** Nothing is deleted: the server has no delete tool, saving the same
-text twice changes nothing, and content that looks like a secret (API keys, tokens, private
+text twice changes nothing (a repo's description is the one thing `update_repo` replaces without keeping history), and content that looks like a secret (API keys, tokens, private
 keys) is refused — the error names the kind, never the value. Prompts you save live in your
 PromptLikeEngineer account; how the service handles them is in its
 [Privacy Policy](https://promptlikeengineer.com/privacy) and
@@ -174,7 +177,7 @@ PromptLikeEngineer account; how the service handles them is in its
 
 | What you see | What to do |
 |---|---|
-| "Not logged in. Run `ple login` in a terminal first (install: npm i -g promptlike@0.13.2)." | Run `npm i -g promptlike@0.13.2 && ple login` once, then ask again. Tools use the new session on the next call; slash commands and `@` resources are listed when the server connects, so start a new Claude Code session if they are missing |
+| "Not logged in. Run `ple login` in a terminal first (install: npm i -g promptlike@0.14.0)." | Run `npm i -g promptlike@0.14.0 && ple login` once, then ask again. Tools use the new session on the next call; slash commands and `@` resources are listed when the server connects, so start a new Claude Code session if they are missing |
 | "Session expired. Run `ple login` in a terminal to sign in again." | Run `ple login` again |
 | "Rate limited. Retry in 12s." | Wait that long, then ask again |
 | "Cannot reach https://promptlikeengineer.com. Check your connection." or "No response from https://promptlikeengineer.com within 15s." | Check your connection and try again |

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.0 — 2026-11-27
+
+The MCP server is now pinned to `promptlike-mcp@0.8.0` and the install command in the skill to `promptlike@0.14.0`. New in
+the server: two tools, `fork_prompt` (copies a public prompt of someone else into a repo you own; the copy is private and
+keeps its source and license) and `update_repo` (changes a repo's one-line description). `update_prompt` can rename a
+prompt with `new_title`. The server now ships its dependency versions pinned, with zod 4 (closes GHSA-mrhx-c7xc-m3w5).
+Nothing is deleted by any tool.
+
 ## 0.6.2 — 2026-11-02
 
 Asks before acting. A saved-prompt suggestion is now data: Claude names the prompt and fetches it only after you say yes. Feedback

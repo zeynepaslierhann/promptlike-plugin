@@ -15,7 +15,7 @@ The MCP server shares the CLI session. If a tool call returns an authentication 
 tell the user to run this once and then retry — do not try to work around it:
 
 ```bash
-npm i -g promptlike@0.13.2 && ple login
+npm i -g promptlike@0.14.0 && ple login
 ```
 
 ## How to use it
